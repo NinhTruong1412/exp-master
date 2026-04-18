@@ -552,7 +552,7 @@ def write_manifest(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Prepare enriched experiment data from raw interactions and content metadata.")
     parser.add_argument("--data-dir", default="data", help="Input data directory")
-    parser.add_argument("--prepared-root", default="prepared_data", help="Prepared-data root directory")
+    parser.add_argument("--prepared-root", default="data_prep", help="Prepared-data root directory")
     parser.add_argument("--run-name", default=None, help="Name for this prepared-data run")
     parser.add_argument("--output-dir", default=None, help="Optional explicit output directory for this run")
     parser.add_argument(

@@ -11,4 +11,4 @@ Recommended structure:
 Each experiment should record the prepared dataset manifest it depends on, for example:
 
 - `prepared_run`: `bert4rec_v1`
-- `prepared_manifest`: `prepared_data/manifests/bert4rec_v1.json`
+- `prepared_manifest`: `data_prep/manifests/bert4rec_v1.json`

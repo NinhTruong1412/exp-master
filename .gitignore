@@ -4,17 +4,20 @@ __pycache__/
 
 # Large local datasets and generated outputs stay in Google Drive, not git.
 data/**
-processed_final/**
-prepared_data/runs/**
+data_prep/runs/**
+data_prep/legacy/processed_final/**
 
 # Keep lightweight pointers/instructions in the repo.
 !data/README.md
-!data/data_preparing_plan.md
-!processed_final/README.md
-!prepared_data/
-!prepared_data/README.md
-!prepared_data/manifests/
-!prepared_data/manifests/.gitkeep
-!prepared_data/manifests/*.json
+!data_prep/
+!data_prep/README.md
+!data_prep/data_preparing_plan.md
+!data_prep/preprocess_experiment_data.py
+!data_prep/setup_data_from_drive.py
+!data_prep/manifests/
+!data_prep/manifests/.gitkeep
+!data_prep/manifests/*.json
+!data_prep/legacy/
+!data_prep/legacy/README.md
 !exp/
 !exp/README.md

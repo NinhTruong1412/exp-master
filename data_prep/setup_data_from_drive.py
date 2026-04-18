@@ -12,7 +12,10 @@ from pathlib import Path
 
 
 DEFAULT_DRIVE_URL = "https://drive.google.com/drive/folders/1Ebc_dHoB4G9RiltOJJCII6A_LGEcugAU?usp=drive_link"
-TARGET_DIRS = ("data", "processed_final")
+TARGET_PATHS = {
+    "data": "data",
+    "processed_final": "data_prep/legacy/processed_final",
+}
 
 
 def parse_args() -> argparse.Namespace:
@@ -28,12 +31,12 @@ def parse_args() -> argparse.Namespace:
         "--repo-root",
         type=Path,
         default=Path(__file__).resolve().parents[1],
-        help="Repository root where data/ and processed_final/ should be created.",
+        help="Repository root where data/ and data_prep/ should be created.",
     )
     parser.add_argument(
         "--force",
         action="store_true",
-        help="Replace existing local data/ and processed_final/ directories.",
+        help="Replace existing local data/ and legacy processed directories.",
     )
     return parser.parse_args()
 
@@ -103,13 +106,13 @@ def main() -> None:
         download_root = Path(tmp)
         run_gdown(args.drive_url, download_root)
 
-        located = {name: find_unique_dir(download_root, name) for name in TARGET_DIRS}
+        located = {name: find_unique_dir(download_root, name) for name in TARGET_PATHS}
         for name, src in located.items():
-            replace_tree(src, repo_root / name, force=args.force)
+            replace_tree(src, repo_root / TARGET_PATHS[name], force=args.force)
 
     print("Data setup complete.")
-    for name in TARGET_DIRS:
-        print(f"  - {repo_root / name}")
+    for target in TARGET_PATHS.values():
+        print(f"  - {repo_root / target}")
 
 
 if __name__ == "__main__":
