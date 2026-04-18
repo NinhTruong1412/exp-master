@@ -1,6 +1,6 @@
 # Exp
 
-This repository keeps the code, documentation, and lightweight metadata for the experiment workflow.
+This repository is organized around reproducible data preparation and lightweight experiment tracking.
 
 Large datasets and generated parquet outputs are intentionally not stored in GitHub history. They should be shared through Google Drive.
 
@@ -10,14 +10,36 @@ Project Drive folder:
 ## What Is Tracked
 
 - `scripts/`
-- project docs such as `data_preparing_plan.md`
+- `exp/` for small experiment configs and notes
+- `prepared_data/manifests/` for prepared-dataset manifests
 - small setup and usage files
 
 ## What Is Not Tracked
 
-- `data/`
-- `processed_final/`
+- raw dataset payloads under `data/`
+- prepared parquet payloads under `prepared_data/runs/`
 - large `.parquet` artifacts and intermediate outputs
+
+## Repository Layout
+
+- `data/`: raw inputs and data-preparation planning notes
+- `prepared_data/`: prepared dataset runs and tracked manifests
+- `exp/`: small experiment folders for model runs
+- `scripts/`: bootstrap and preprocessing scripts
+
+## Data Preparation Runs
+
+Use the preprocessing script to create a named prepared dataset run:
+
+- `python3 scripts/preprocess_experiment_data.py --run-name bert4rec_v1`
+
+That writes:
+
+- `prepared_data/runs/bert4rec_v1/`: parquet outputs, report, config, and summary
+- `prepared_data/runs/bert4rec_v1/manifest.json`: run-local manifest
+- `prepared_data/manifests/bert4rec_v1.json`: tracked manifest for experiment references
+
+This makes it easy for each folder under `exp/` to reference a specific prepared dataset by manifest name.
 
 ## Google Drive Workflow
 
@@ -39,9 +61,11 @@ Project Drive folder:
    - `python3 scripts/setup_data_from_drive.py --force`
 
 The script expects the shared Google Drive folder to contain `data/` and `processed_final/`.
+`processed_final/` is treated as a legacy downloaded snapshot; new processing runs should go to `prepared_data/runs/`.
 
 ## Recommended Repo Usage
 
-- Use GitHub for code, docs, and pipeline definitions.
-- Use Google Drive for raw and processed data.
-- If data changes, update the Drive files and note the change in a commit message or changelog entry.
+- Keep raw data in `data/`.
+- Generate named prepared runs into `prepared_data/runs/`.
+- Track only the small manifest files in `prepared_data/manifests/`.
+- Keep each model experiment under `exp/<experiment_name>/` and record which prepared run it uses.

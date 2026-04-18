@@ -9,6 +9,7 @@ import re
 import shutil
 from collections import Counter
 from dataclasses import dataclass, asdict
+from datetime import datetime, timezone
 from html import unescape
 from pathlib import Path
 from typing import Iterable
@@ -467,10 +468,93 @@ def write_partitioned_parquet(frames: list[pd.DataFrame], output_path: Path) -> 
         pd.DataFrame().to_parquet(output_path, index=False)
 
 
+def default_run_name() -> str:
+    return datetime.now(timezone.utc).strftime("prep_%Y%m%dT%H%M%SZ")
+
+
+def build_output_paths(root: Path, prepared_root_arg: str, run_name: str, output_dir_arg: str | None) -> tuple[Path, Path, Path]:
+    prepared_root = root / prepared_root_arg
+    manifest_dir = prepared_root / "manifests"
+    if output_dir_arg:
+        output_dir = root / output_dir_arg
+    else:
+        output_dir = prepared_root / "runs" / run_name
+    return prepared_root, manifest_dir, output_dir
+
+
+def file_entry(path: Path, root: Path) -> dict[str, object]:
+    return {
+        "path": str(path.relative_to(root)),
+        "size_bytes": path.stat().st_size,
+    }
+
+
+def write_manifest(
+    manifest_path: Path,
+    run_manifest_path: Path,
+    repo_root: Path,
+    run_name: str,
+    output_dir: Path,
+    args: argparse.Namespace,
+    summary: dict[str, object],
+    metadata_stats: dict[str, object],
+    sequence_stats: dict[str, object],
+) -> None:
+    tracked_files = [
+        output_dir / "content_metadata_clean.parquet",
+        output_dir / "interactions_enriched.parquet",
+        output_dir / "user_sequences.parquet",
+        output_dir / "train.parquet",
+        output_dir / "valid.parquet",
+        output_dir / "test.parquet",
+        output_dir / "item_vocab.parquet",
+        output_dir / "feature_config.json",
+        output_dir / "processing_summary.json",
+        output_dir / "DATA_PROCESSING_REPORT.md",
+    ]
+
+    manifest = {
+        "run_name": run_name,
+        "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        "prepared_data_dir": str(output_dir.relative_to(repo_root)),
+        "manifest_paths": {
+            "run_manifest": str(run_manifest_path.relative_to(repo_root)),
+            "tracked_manifest": str(manifest_path.relative_to(repo_root)),
+        },
+        "inputs": {
+            "data_dir": args.data_dir,
+            "clean_shards_dir": args.clean_shards_dir,
+        },
+        "filters": {
+            "min_user_events": args.min_user_events,
+            "min_item_events": args.min_item_events,
+        },
+        "artifacts": [file_entry(path, repo_root) for path in tracked_files if path.exists()],
+        "summary": {
+            "final_events": summary["final_events"],
+            "final_users": summary["final_users"],
+            "final_items": summary["final_items"],
+            "content_join_coverage": summary["content_join_coverage"],
+            "sequence_users": sequence_stats["users"],
+            "sequence_length_p50": sequence_stats["seq_len_p50"],
+            "sequence_length_p95": sequence_stats["seq_len_p95"],
+        },
+        "metadata": {
+            "rows_after_cleaning": metadata_stats["rows_after_cleaning"],
+            "content_type_distribution": metadata_stats["content_type_distribution"],
+        },
+    }
+    encoded = json.dumps(manifest, indent=2, ensure_ascii=False, default=str)
+    run_manifest_path.write_text(encoded, encoding="utf-8")
+    manifest_path.write_text(encoded, encoding="utf-8")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Prepare enriched experiment data from raw interactions and content metadata.")
     parser.add_argument("--data-dir", default="data", help="Input data directory")
-    parser.add_argument("--output-dir", default="processed", help="Output directory")
+    parser.add_argument("--prepared-root", default="prepared_data", help="Prepared-data root directory")
+    parser.add_argument("--run-name", default=None, help="Name for this prepared-data run")
+    parser.add_argument("--output-dir", default=None, help="Optional explicit output directory for this run")
     parser.add_argument(
         "--clean-shards-dir",
         default=None,
@@ -482,8 +566,10 @@ def main() -> None:
 
     root = Path.cwd()
     data_dir = root / args.data_dir
-    output_dir = root / args.output_dir
+    run_name = args.run_name or default_run_name()
+    _, manifest_dir, output_dir = build_output_paths(root, args.prepared_root, run_name, args.output_dir)
     tmp_dir = output_dir / "tmp_interactions"
+    manifest_dir.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
     tmp_dir.mkdir(parents=True, exist_ok=True)
 
@@ -692,6 +778,17 @@ def main() -> None:
         encoding="utf-8",
     )
     generate_report(output_dir, summary, metadata_stats, sequence_stats)
+    write_manifest(
+        manifest_path=manifest_dir / f"{run_name}.json",
+        run_manifest_path=output_dir / "manifest.json",
+        repo_root=root,
+        run_name=run_name,
+        output_dir=output_dir,
+        args=args,
+        summary=summary,
+        metadata_stats=metadata_stats,
+        sequence_stats=sequence_stats,
+    )
 
 
 if __name__ == "__main__":
