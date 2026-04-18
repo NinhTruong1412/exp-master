@@ -1,14 +1,36 @@
-# Experiments
+# Experiment: Watch-Time-Aware Sequential Recommendation
 
-Use this directory for small, tracked experiment folders.
+End-to-end experiment pipeline for BERT-based sequential recommendation
+enriched with watch time and content duration signals.
 
-Recommended structure:
+## Quick Start
 
-- `exp/<experiment_name>/config.json`
-- `exp/<experiment_name>/notes.md`
-- `exp/<experiment_name>/results.json`
+```bash
+pip install -r requirements.txt
 
-Each experiment should record the prepared dataset manifest it depends on, for example:
+# Create data subset
+python scripts/create_subset.py --source-dir ../data_prep/legacy/processed_final --output-dir data --num-users 100000
 
-- `prepared_run`: `bert4rec_v1`
-- `prepared_manifest`: `data_prep/manifests/bert4rec_v1.json`
+# Train a model
+python scripts/train.py --config configs/variant_a.yaml --seed 42
+
+# Monitor
+tensorboard --logdir outputs/tensorboard/
+
+# Run all models
+python scripts/train_all.py --seeds 42,123,456
+
+# Compare and test significance
+python scripts/compare.py --results-dir outputs/
+
+# Generate report
+python scripts/generate_report.py --results-dir outputs/
+```
+
+## Structure
+
+- `configs/` — YAML config files for each model
+- `src/` — core library (data, models, trainers, evaluation, utils)
+- `scripts/` — entry-point scripts
+- `outputs/` — checkpoints, logs, TensorBoard (gitignored)
+- `data/` — experiment data subset (gitignored)

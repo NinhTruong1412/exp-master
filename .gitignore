@@ -21,3 +21,11 @@ data_prep/legacy/processed_final/**
 !data_prep/legacy/README.md
 !exp/
 !exp/README.md
+
+exp/log/
+exp/log_tensorboard/
+exp/rec
+exp/recbole_outputs/
+exp/data
+exp/dataset 
+

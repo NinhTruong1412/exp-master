@@ -1,0 +1,50 @@
+# RecBole base configuration — shared across all models
+# Override per-model settings in individual config files
+
+# === General ===
+seed: 42
+reproducibility: True
+state: INFO
+
+# === Data ===
+dataset: vod_data
+data_path: dataset/
+USER_ID_FIELD: user_id
+ITEM_ID_FIELD: item_id
+TIME_FIELD: timestamp
+MAX_ITEM_LIST_LENGTH: 50
+load_col:
+    inter: [user_id, item_id, timestamp, watch_ratio, watch_bucket, duration_bucket]
+numerical_features: []
+
+# Filtering
+user_inter_num_interval: "[5,inf)"
+item_inter_num_interval: "[0,inf)"
+
+# === Split ===
+eval_args:
+    split: {'LS': 'valid_and_test'}
+    group_by: user
+    order: TO
+    mode: full
+
+# === Training ===
+epochs: 5
+train_batch_size: 256
+eval_batch_size: 256
+learning_rate: 0.001
+weight_decay: 0.0
+train_neg_sample_args: ~
+stopping_step: 3
+eval_step: 1
+checkpoint_dir: recbole_outputs/checkpoints/
+
+# === Evaluation ===
+metrics: ['Hit', 'NDCG', 'MRR']
+topk: [5, 10, 20]
+valid_metric: NDCG@10
+metric_decimal_place: 6
+
+# === Device ===
+# RecBole auto-detects: CUDA > MPS > CPU
+gpu_id: 0

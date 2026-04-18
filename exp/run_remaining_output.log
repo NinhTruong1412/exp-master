@@ -1,0 +1,63 @@
+18 Apr 15:13    INFO  [Training]: train_batch_size = [256] train_neg_sample_args: [{'distribution': 'none', 'sample_num': 'none', 'alpha': 'none', 'dynamic': False, 'candidate_num': 0}]
+18 Apr 15:13    INFO  [Evaluation]: eval_batch_size = [256] eval_args: [{'split': {'LS': 'valid_and_test'}, 'order': 'TO', 'group_by': 'user', 'mode': {'valid': 'full', 'test': 'full'}}]
+
+############################################################
+# Training CounterfactualBERT4Rec (seed=42)
+############################################################
+
+============================================================
+Model: CounterfactualBERT4Rec | Params: 881,523 | Seed: 42
+Device: mps | Epochs: 5
+============================================================
+
+18 Apr 15:16    INFO  epoch 0 training [time: 174.43s, train loss: 5041.9513]
+18 Apr 15:16    INFO  epoch 0 evaluating [time: 6.19s, valid_score: 0.135245]
+18 Apr 15:16    INFO  valid result: 
+hit@5 : 0.1641    hit@10 : 0.2685    hit@20 : 0.3716    ndcg@5 : 0.10138    ndcg@10 : 0.135245    ndcg@20 : 0.161393    mrr@5 : 0.081029    mrr@10 : 0.095066    mrr@20 : 0.102285
+18 Apr 15:16    INFO  Saving current: recbole_outputs/checkpoints/CounterfactualBERT4Rec-Apr-18-2026_15-13-49.pth
+18 Apr 15:19    INFO  epoch 1 training [time: 167.45s, train loss: 4771.2633]
+18 Apr 15:19    INFO  epoch 1 evaluating [time: 6.12s, valid_score: 0.151441]
+18 Apr 15:19    INFO  valid result: 
+hit@5 : 0.1953    hit@10 : 0.29315    hit@20 : 0.39455    ndcg@5 : 0.1197    ndcg@10 : 0.151441    ndcg@20 : 0.177091    mrr@5 : 0.095021    mrr@10 : 0.10818    mrr@20 : 0.115227
+18 Apr 15:19    INFO  Saving current: recbole_outputs/checkpoints/CounterfactualBERT4Rec-Apr-18-2026_15-13-49.pth
+18 Apr 15:22    INFO  epoch 2 training [time: 158.92s, train loss: 4672.1805]
+18 Apr 15:22    INFO  epoch 2 evaluating [time: 6.65s, valid_score: 0.165426]
+18 Apr 15:22    INFO  valid result: 
+hit@5 : 0.2192    hit@10 : 0.30865    hit@20 : 0.4046    ndcg@5 : 0.136506    ndcg@10 : 0.165426    ndcg@20 : 0.189722    mrr@5 : 0.109463    mrr@10 : 0.121397    mrr@20 : 0.128084
+18 Apr 15:22    INFO  Saving current: recbole_outputs/checkpoints/CounterfactualBERT4Rec-Apr-18-2026_15-13-49.pth
+18 Apr 15:25    INFO  epoch 3 training [time: 161.47s, train loss: 4605.8445]
+18 Apr 15:25    INFO  epoch 3 evaluating [time: 5.98s, valid_score: 0.166963]
+18 Apr 15:25    INFO  valid result: 
+hit@5 : 0.2169    hit@10 : 0.3117    hit@20 : 0.40755    ndcg@5 : 0.136394    ndcg@10 : 0.166963    ndcg@20 : 0.19117    mrr@5 : 0.110019    mrr@10 : 0.122584    mrr@20 : 0.129214
+18 Apr 15:25    INFO  Saving current: recbole_outputs/checkpoints/CounterfactualBERT4Rec-Apr-18-2026_15-13-49.pth
+18 Apr 15:28    INFO  epoch 4 training [time: 162.55s, train loss: 4553.7614]
+18 Apr 15:28    INFO  epoch 4 evaluating [time: 6.19s, valid_score: 0.170404]
+18 Apr 15:28    INFO  valid result: 
+hit@5 : 0.21605    hit@10 : 0.31475    hit@20 : 0.4104    ndcg@5 : 0.138538    ndcg@10 : 0.170404    ndcg@20 : 0.194603    mrr@5 : 0.113163    mrr@10 : 0.126281    mrr@20 : 0.132932
+18 Apr 15:28    INFO  Saving current: recbole_outputs/checkpoints/CounterfactualBERT4Rec-Apr-18-2026_15-13-49.pth
+18 Apr 15:28    INFO  Loading model structure and parameters from recbole_outputs/checkpoints/CounterfactualBERT4Rec-Apr-18-2026_15-13-49.pth
+
+Results saved to recbole_outputs/results/CounterfactualBERT4Rec_seed42.json
+Done in 866.0s — Test NDCG@10: 0.165478
+
+############################################################
+# Training CalibratedBERT4Rec (seed=42)
+############################################################
+18 Apr 15:28    INFO  [Training]: train_batch_size = [256] train_neg_sample_args: [{'distribution': 'none', 'sample_num': 'none', 'alpha': 'none', 'dynamic': False, 'candidate_num': 0}]
+18 Apr 15:28    INFO  [Evaluation]: eval_batch_size = [256] eval_args: [{'split': {'LS': 'valid_and_test'}, 'order': 'TO', 'group_by': 'user', 'mode': {'valid': 'full', 'test': 'full'}}]
+
+============================================================
+Model: CalibratedBERT4Rec | Params: 788,907 | Seed: 42
+Device: mps | Epochs: 5
+============================================================
+
+18 Apr 15:30    INFO  epoch 0 training [time: 162.57s, train loss: 4934.6905]
+18 Apr 15:31    INFO  epoch 0 evaluating [time: 5.79s, valid_score: 0.133172]
+18 Apr 15:31    INFO  valid result: 
+hit@5 : 0.16245    hit@10 : 0.2685    hit@20 : 0.3726    ndcg@5 : 0.098768    ndcg@10 : 0.133172    ndcg@20 : 0.15964    mrr@5 : 0.078129    mrr@10 : 0.092393    mrr@20 : 0.099736
+18 Apr 15:31    INFO  Saving current: recbole_outputs/checkpoints/CalibratedBERT4Rec-Apr-18-2026_15-28-15.pth
+18 Apr 15:33    INFO  epoch 1 training [time: 139.12s, train loss: 4670.9348]
+18 Apr 15:33    INFO  epoch 1 evaluating [time: 5.74s, valid_score: 0.149600]
+18 Apr 15:33    INFO  valid result: 
+hit@5 : 0.18885    hit@10 : 0.2901    hit@20 : 0.38845    ndcg@5 : 0.116756    ndcg@10 : 0.1496    ndcg@20 : 0.174454    mrr@5 : 0.093232    mrr@10 : 0.106848    mrr@20 : 0.113663
+18 Apr 15:33    INFO  Saving current: recbole_outputs/checkpoints/CalibratedBERT4Rec-Apr-18-2026_15-28-15.pth
