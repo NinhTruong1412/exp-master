@@ -1,0 +1,11 @@
+.DS_Store
+__pycache__/
+*.pyc
+
+# Large local datasets and generated outputs stay in Google Drive, not git.
+data/**
+processed_final/**
+
+# Keep lightweight pointers/instructions in the repo.
+!data/README.md
+!processed_final/README.md
