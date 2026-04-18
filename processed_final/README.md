@@ -4,7 +4,7 @@ This directory is excluded from git because it contains large generated artifact
 
 Store the real contents in Google Drive and place the shared folder link here:
 
-`REPLACE_WITH_GOOGLE_DRIVE_LINK`
+`https://drive.google.com/drive/folders/1Ebc_dHoB4G9RiltOJJCII6A_LGEcugAU?usp=drive_link`
 
 Suggested contents:
 

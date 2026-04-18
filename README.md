@@ -4,6 +4,9 @@ This repository keeps the code, documentation, and lightweight metadata for the 
 
 Large datasets and generated parquet outputs are intentionally not stored in GitHub history. They should be shared through Google Drive.
 
+Project Drive folder:
+`https://drive.google.com/drive/folders/1Ebc_dHoB4G9RiltOJJCII6A_LGEcugAU?usp=drive_link`
+
 ## What Is Tracked
 
 - `scripts/`
@@ -24,6 +27,18 @@ Large datasets and generated parquet outputs are intentionally not stored in Git
 4. Keep the Drive link updated in the two README files below:
    - `data/README.md`
    - `processed_final/README.md`
+
+## Bootstrap On A New Machine
+
+1. Clone the repository.
+2. Install `gdown`:
+   - `python3 -m pip install gdown`
+3. Download the large data into the repo:
+   - `python3 scripts/setup_data_from_drive.py`
+4. If `data/` or `processed_final/` already exist locally and you want to replace them:
+   - `python3 scripts/setup_data_from_drive.py --force`
+
+The script expects the shared Google Drive folder to contain `data/` and `processed_final/`.
 
 ## Recommended Repo Usage
 
